@@ -1,0 +1,46 @@
+syntax = "proto3";
+package AIEnglish;
+service AIEnglishService{
+    rpc EvaluateEssay (EvaluateRequest) returns (EvaluateResponse);
+    rpc GenerateTopic (GeneratingRequest) returns (TopicsResponse);
+    rpc RefineEssay (RefiningEssayRequest) returns (RefiningEssayResponse);
+    rpc BrainstormTopic (BrainstormingTopicRequest) returns (BrainstormingTopicResponse);
+    rpc FindSynoAno (FindingSynoAnoRequest) returns (FindingSynoAnoResponse);
+
+}
+
+message EvaluateRequest{
+    string topic = 1;
+    string essay = 2;
+}
+message EvaluateResponse{
+    string result = 1;
+}
+
+message GeneratingRequest{
+    string request = 1;
+}
+message TopicsResponse{
+    string result = 1;
+}
+
+message RefiningEssayRequest{
+    string essay = 1;
+}
+message RefiningEssayResponse{
+    string result = 1;
+}
+
+message BrainstormingTopicRequest{
+    string topic = 1;
+}
+message BrainstormingTopicResponse{
+    string result = 1;
+}
+
+message FindingSynoAnoRequest{
+    string word = 1;
+}
+message FindingSynoAnoResponse{
+    string result = 1;
+}

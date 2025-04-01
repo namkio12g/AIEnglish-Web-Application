@@ -1,0 +1,42 @@
+.button-evaluate-site{
+    margin: 0;
+    color: black;
+    &:hover{
+        background-color: rgb(230, 72, 72);
+    }
+    &.active{
+        color: white;
+    }
+    
+
+}
+.button-content{
+        height: 0px;
+        padding: 0px 20px;
+        transition: all linear 0.3s;
+        background-color: white;
+        &.active{
+            height: 200px ;
+            padding: 10px 20px;
+            display: block;
+        }
+    }
+.refine-button{
+    padding: 4px 5px;
+    width: 30px;
+    height: 40px;
+    transition: all linear 0.15s;
+    &:hover{
+        width: 65px;
+        height: 50px;
+        background-color: #2413bb;
+        .text{
+            width: fit-content;
+            display: block;
+        }
+    }
+    .text{
+        width: 0;
+        display: none;
+    }
+}
