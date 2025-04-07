@@ -1,4 +1,4 @@
-import { Injectable,CanActivate,ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import { Injectable,CanActivate,ExecutionContext, UnauthorizedException, BadRequestException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
@@ -9,15 +9,16 @@ export class JwtAuthGuard implements CanActivate {
   }
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         const req=context.switchToHttp().getRequest();
-        const token=req.headers.authorization.split(' ')[1];
-        if(!token){
-            throw new UnauthorizedException();
-        }
+         if (!req.cookies.jwtToken)
+           throw new UnauthorizedException("there are no token");
+        const token = req.cookies.jwtToken;
         try {
-            req.user= this.jwtService.decode(token);
+            const user= this.jwtService.decode(token);
+            if(!user)
+                throw new UnauthorizedException('invalid token');
+            req.user=user
         } catch (error) {
-            console.log("the error",error);
-            throw new UnauthorizedException;
+            throw new BadRequestException("Guards error");
         }
 
         return true;

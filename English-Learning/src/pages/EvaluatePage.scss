@@ -40,3 +40,22 @@
         display: none;
     }
 }
+.open-refined-box-button{
+    padding: 4px 5px;
+    width: 30px;
+    height: 40px;
+    transition: all linear 0.15s;
+    &:hover{
+        width: 80px;
+        height: 50px;
+        background-color: #e4164d;
+        .text{
+            width: fit-content;
+            display: block;
+        }
+    }
+    .text{
+        width: 0;
+        display: none;
+    }
+}

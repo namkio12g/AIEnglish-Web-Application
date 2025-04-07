@@ -6,7 +6,7 @@ export class Word {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ nullable: false })
   wordName: string;
 
   @Column({ default: '' })
@@ -27,7 +27,7 @@ export class Word {
   @ManyToMany(() => WordsList, (wordsList) => wordsList.words)
   wordsLists: WordsList[];
 
-  constructor(word : Partial<Word>){
-    Object.assign(this,word)
+  constructor(word: Partial<Word>) {
+    Object.assign(this, word);
   }
 }

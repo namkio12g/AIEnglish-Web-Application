@@ -1,8 +1,8 @@
-import { Injectable,OnModuleInit } from "@nestjs/common";
-import { AiDeviceInterface } from "../ai-device.interface";
+import { Injectable, OnModuleInit } from '@nestjs/common';
+import { AiDeviceInterface } from '../ai-device.interface';
 import OpenAI from 'openai';
-import { ConfigService } from "@nestjs/config";
-const MODEL = "gpt-3.5-turbo";
+import { ConfigService } from '@nestjs/config';
+const MODEL = 'gpt-3.5-turbo';
 const TEMPERATURE = 0.7;
 @Injectable()
 export class OpenAiService implements AiDeviceInterface {
@@ -12,10 +12,10 @@ export class OpenAiService implements AiDeviceInterface {
     this.openai = new OpenAI({ apiKey });
   }
   generateTopic() {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
   refineEssay(essay: string) {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
 
   evaluateEssay(topic: string, essay: string) {
@@ -36,19 +36,19 @@ export class OpenAiService implements AiDeviceInterface {
                             Return JSON format only, no additional text.`;
 
     return this.callAIApi({
-        devContent: devContent,
-        userContent: userContent,
+      devContent: devContent,
+      userContent: userContent,
     });
   }
   brainstormTopic(topic: string) {}
-  findSynonymAndAnonyms(word: string) {}
+  findSynonymAndAntonyms(word: string) {}
   async callAIApi(request: Record<string, any>) {
-    console.log(request["devContent"])
+    console.log(request['devContent']);
     const response = await this.openai.chat.completions.create({
       model: MODEL,
       messages: [
-        { role: 'developer', content: "you are guy" },
-        { role: 'user', content:"hello" },
+        { role: 'developer', content: 'you are guy' },
+        { role: 'user', content: 'hello' },
       ],
     });
     return response.choices[0].message.content;

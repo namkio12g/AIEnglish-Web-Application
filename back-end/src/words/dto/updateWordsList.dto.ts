@@ -7,5 +7,5 @@ export class UpdateWordsListDTO {
 
   @IsArray()
   @IsNotEmpty()
-  readonly words: string[];
+  words: string[];
 }

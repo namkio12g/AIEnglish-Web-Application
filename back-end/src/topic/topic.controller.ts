@@ -6,12 +6,12 @@ export class TopicController {
 
     @Post("generate")
     generateTopic(){
-        return this.generateTopic()
+        return this.topicService.generateTopic();
     }
 
     @Post("brainstorm")
     brainstormTopic(@Body("topic") topic:string){
-        return this.brainstormTopic(topic);
+        return this.topicService.brainstormTopic(topic);
     }
 
 }

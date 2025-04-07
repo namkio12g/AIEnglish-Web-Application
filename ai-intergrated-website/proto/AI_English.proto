@@ -5,7 +5,7 @@ service AIEnglishService{
     rpc GenerateTopic (GeneratingRequest) returns (TopicsResponse);
     rpc RefineEssay (RefiningEssayRequest) returns (RefiningEssayResponse);
     rpc BrainstormTopic (BrainstormingTopicRequest) returns (BrainstormingTopicResponse);
-    rpc FindSynoAno (FindingSynoAnoRequest) returns (FindingSynoAnoResponse);
+    rpc FindSynoAnto (FindingSynoAntoRequest) returns (FindingSynoAntoResponse);
 
 }
 
@@ -38,9 +38,9 @@ message BrainstormingTopicResponse{
     string result = 1;
 }
 
-message FindingSynoAnoRequest{
+message FindingSynoAntoRequest{
     string word = 1;
 }
-message FindingSynoAnoResponse{
+message FindingSynoAntoResponse{
     string result = 1;
 }

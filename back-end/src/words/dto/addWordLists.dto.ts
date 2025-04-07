@@ -6,5 +6,5 @@ export class AddWordsListDTO {
   readonly id: string;
 
   @IsNotEmpty()
-  readonly wordDTO: WordDTO;
+  wordDTO: WordDTO;
 }

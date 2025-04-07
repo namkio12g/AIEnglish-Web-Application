@@ -1,4 +1,4 @@
-import { Observable } from "rxjs"
+import { Observable } from 'rxjs';
 export interface AIEnglishService {
   evaluateEssay(data: {
     topic: string;
@@ -7,5 +7,5 @@ export interface AIEnglishService {
   generateTopic(data: { request: string }): Observable<{ result: string }>;
   refineEssay(data: { essay: string }): Observable<{ result: string }>;
   brainstormTopic(data: { topic: string }): Observable<{ result: string }>;
-  findSynoAno(data: { word: string }): Observable<{ result: string }>;
+  findSynoAnto(data: { word: string }): Observable<{ result: string }>;
 }

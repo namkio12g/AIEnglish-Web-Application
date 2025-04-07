@@ -3,8 +3,6 @@ import { IsString } from "class-validator";
 import { Column } from "typeorm";
 
 export class WordDTO {
-  @IsString()
-  readonly id: string;
 
   @IsString()
   wordName: string;

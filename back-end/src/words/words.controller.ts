@@ -1,11 +1,13 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
   Post,
   Query,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import { WordsService } from './words.service';
@@ -19,30 +21,38 @@ export class WordsController {
 
   @UseGuards(JwtAuthGuard)
   @Get('words-in-list')
-  getWordsInList(@Param('wordsListId') wordsListId: string) {
+  getWordsInList(@Query('wordsListId') wordsListId: string) {
     return this.wordsService.getWordsList(wordsListId);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('delete-words-list')
+  @Delete('delete-words-list')
   deleteWordsList(@Param('wordsListId') wordsListId: string) {
     return this.wordsService.deleteWordsList(wordsListId);
   }
 
   @UseGuards(JwtAuthGuard)
+  @Post('create-words-list')
+  createWordsList(@Body('name') wordsListName: string, @Request() req) {
+    const userId = req.user.id;
+    return this.wordsService.createWordsList(userId, wordsListName);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Post('add-word')
   addWord(@Body() addWordsListDTO: AddWordsListDTO) {
+    console.log(addWordsListDTO);
     return this.wordsService.addWord(addWordsListDTO);
   }
   @UseGuards(JwtAuthGuard)
-  @Patch('add-word')
+  @Patch('update-words')
   updateWordsList(@Body() updateWordsListDTO: UpdateWordsListDTO) {
     return this.wordsService.updateWordsList(updateWordsListDTO);
   }
 
-  @Get('word-syno-ano')
-  getWordSynoAno(@Param('word') word: string) {
-    return this.wordsService.findSynoAno(word);
+  @Get('word-syno-Anto')
+  getWordSynoAnto(@Query('word') word: string) {
+    return this.wordsService.findSynoAnto(word);
   }
 
   @Get('word-meaning')

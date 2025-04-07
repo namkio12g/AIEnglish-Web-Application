@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable,InternalServerErrorException,OnModuleInit } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  OnModuleInit,
+} from '@nestjs/common';
 import { Client, ClientGrpc } from '@nestjs/microservices';
 import { Transport } from '@nestjs/microservices';
 import { AIEnglishService } from '../AI_English/aiEnglishService.interface';
@@ -11,6 +16,7 @@ import { Word } from './entities/word.entity';
 import { WordsList } from './entities/wordsList.entity';
 import { EntityManager } from 'typeorm';
 import { UpdateWordsListDTO } from './dto/updateWordsList.dto';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class WordsService implements OnModuleInit {
@@ -19,6 +25,8 @@ export class WordsService implements OnModuleInit {
     @InjectRepository(Word) private wordRepository: Repository<Word>,
     @InjectRepository(WordsList)
     private wordsListRepository: Repository<WordsList>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
   @Client({
     transport: Transport.GRPC,
@@ -61,6 +69,7 @@ export class WordsService implements OnModuleInit {
     try {
       const wordList = await this.wordsListRepository.findOne({
         where: { id: wordsListId },
+        relations: ['words'],
       });
       if (!wordList) {
         throw new BadRequestException('Cant find the words list');
@@ -84,6 +93,24 @@ export class WordsService implements OnModuleInit {
     } catch (error) {
       console.log('the error:', error);
       throw new InternalServerErrorException('deleting words list error');
+    }
+  }
+
+  async createWordsList(
+    userId: string,
+    wordsListName: string,
+  ): Promise<WordsList> {
+    try {
+      const user = await this.userRepository.findOne({ where: { id: userId } });
+      if (!user) throw new BadRequestException('Cant find the user');
+      const newWordsList = new WordsList({
+        name: wordsListName,
+        user: user,
+      });
+      return this.wordsListRepository.save(newWordsList);
+    } catch (error) {
+      console.log('the error:', error);
+      throw new InternalServerErrorException('creating words list error');
     }
   }
 
@@ -120,23 +147,26 @@ export class WordsService implements OnModuleInit {
           `${this.configService.get<string>('english_dic_api')}${word}`,
         )
       ).data;
+
       return result;
     } catch (error) {
-      console.log(error);
-      throw new InternalServerErrorException("searching word's meaning error");
+      throw new InternalServerErrorException("Searching word's meaning error");
     }
   }
-  async findSynoAno(word: string) {
+  async findSynoAnto(word: string) {
     try {
+      console.log(word);
       const response = await this.aiEnlishService
-        .findSynoAno({ word: word })
+        .findSynoAnto({ word: word })
         .toPromise();
       return response
         ? JSON.parse(response['result'].replace(/```json|```/g, '').trim())
         : {};
     } catch (error) {
       console.error('gRPC Call Failed:', error);
-       throw new InternalServerErrorException("finding word's Syno and Ano error");
+      throw new InternalServerErrorException(
+        "finding word's Syno and Anto error",
+      );
     }
   }
 }

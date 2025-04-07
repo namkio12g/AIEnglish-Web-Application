@@ -9,13 +9,16 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TopicModule } from './topic/topic.module';
 import mainConfig from 'config/mainConfig';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { glob } from 'glob';
 import { join } from 'path';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtAuthGuard } from './guards/JwtAuth.guard';
 import { GoogleStrategy } from './auth/google.strategy';
 import { APP_GUARD } from '@nestjs/core';
+import { User } from './users/entities/user.entity';
+import { Word } from './words/entities/word.entity';
+import { WordsList } from './words/entities/wordsList.entity';
+import { EvaluatingHistory } from './essay/entities/evaluatingHistory.entity';
 
 @Module({
   imports: [
@@ -30,7 +33,7 @@ import { APP_GUARD } from '@nestjs/core';
         username: configService.get<string>('database_username'),
         password: configService.get<string>('database_password'),
         database: configService.get<string>('database_name'),
-        entities: glob.sync(join(__dirname, '**/*.entity{.ts,.js}')),
+        entities: [join(__dirname, '**/*.entity{.ts,.js}')],
         synchronize: true,
       }),
     }),
@@ -41,10 +44,6 @@ import { APP_GUARD } from '@nestjs/core';
     TopicModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    GoogleStrategy,
-   
-  ],
+  providers: [AppService, GoogleStrategy],
 })
 export class AppModule {}

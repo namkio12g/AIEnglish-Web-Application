@@ -41,6 +41,7 @@ export class EssayService implements OnModuleInit {
     try {
       
       const user=await this.userRepo.findOne({where :{id:useId}});
+      console.log("where")
        if(!user){
         throw new BadRequestException("Cant find user");
        }

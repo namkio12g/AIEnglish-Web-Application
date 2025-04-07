@@ -1,26 +1,29 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany, CreateDateColumn } from 'typeorm';
-import { Word } from './word.entity';
-import { User } from 'src/users/entities/user.entity';
+  import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany, CreateDateColumn, ManyToOne } from 'typeorm';
+  import { Word } from './word.entity';
+  import { User } from 'src/users/entities/user.entity';
 
-@Entity()
-export class WordsList {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @Entity()
+  export class WordsList {
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
-  @Column()
-  name: string;
+    @Column({ nullable: false })
+    name: string;
 
-  @Column({default:0})
-  wordsCount: number;
+    @Column({ default: 0 })
+    wordsCount: number;
 
-  @CreateDateColumn()
-  dateCreate: Date;
+    @CreateDateColumn()
+    dateCreate: Date;
 
-  @ManyToMany(()=> Word,(word)=> word.wordsLists, { cascade: true })
-  @JoinTable()
-  words:Word[]
+    @ManyToMany(() => Word,{cascade:true})
+    @JoinTable()
+    words: Word[];
 
-  @OneToMany(()=>User,(user)=>user.wordsLists)
-  user:User
-  
-}
+    @ManyToOne(() => User, (user) => user.wordsLists)
+    user: User;
+
+    constructor(wordsList: Partial<WordsList>) {
+      Object.assign(this, wordsList);
+    }
+  }

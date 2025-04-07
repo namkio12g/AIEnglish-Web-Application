@@ -22,23 +22,24 @@ export class GoogleStrategy extends PassportStrategy(Strategy,'google'){
           clientSecret: clientSecret,
           callbackURL: 'http://localhost:3000/auth/google-redirect',
           scope: ['email', 'profile'],
-          passReqToCallback: true,
         });
     }
 
 
      async validate(
-        accessToken: string,
-        refreshToken: string,
-        profile: any,): Promise<any> {
-        const { displayName, emails, photos ,id} = profile;
+        _accessToken: string,
+      _refreshToken: string,
+      profile: any,
+    done: VerifyCallback,): Promise<any> {
+       const { displayName, emails, photos, id } = profile;
+          
         const user = {
           email: emails[0].value,
           name: displayName,
           avatar: photos[0].value,
           googleId: id,
         };
-        return user
+        done(null, user);
     }
 }
 
